@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-2 sidebar " >
+            <div data-spy="affix" data-offset-top="0" data-offset-bottom="200">
+                <h1>{{user}}</h1>
+                {% autoescape false %}
+                {{info.blog.title}}
+                <br>
+                {{info.blog.description}}
+                {% endautoescape %}
+                <ul class="list-group">
+                    {% for post in posts %}
+                    <li class="list-group-item">
+                    <a href="#{{post.tag}}">{{post.tag}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-xs-10 content">
+            {% for post_group in posts %}
+            <div id="{{post_group['tag']}}">
+                <h2>{{post_group['tag']}}</h2>
+                <div class="grid">
+                    {% for post in post_group['posts']['posts'] %}
+                        {% for photo in post.photos %}
+                        <div class="grid-item" style="width:{{photo.alt_sizes[-3].width*(200/photo.alt_sizes[-3].height)}}px">
+                            <a href="{{post.post_url}}">
+                                <img src="{{photo.alt_sizes[-3].url}}">
+                            </a>
+                        </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div><!-- /.container -->
+{% endblock %}
